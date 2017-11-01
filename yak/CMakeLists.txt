@@ -52,11 +52,8 @@ message(STATUS "Found OpenCV At ${OpenCV_INCLUDE_DIRS}")
 find_library(PCL 1.8 REQUIRED COMPONENTS common gpu)
 
 find_package(CUDA REQUIRED)
-if(${CUDA_VERSION_STRING} VERSION_GREATER "4.1")
-        set(CUDA_ARCH_BIN "2.0 2.1(2.0) 3.0 5.0 5.2" CACHE STRING "Specify 'real' GPU architectures to build binaries for, BIN(PTX) format is supported")
-    else()
-        set(CUDA_ARCH_BIN "2.0 2.1(2.0)" CACHE STRING "Specify 'real' GPU architectures to build binaries for, BIN(PTX) format is supported")
-    endif()
+
+set(CUDA_ARCH_BIN "3.0 5.0 5.2" CACHE STRING "Specify 'real' GPU architectures to build binaries for, BIN(PTX) format is supported")
 APPEND_TARGET_ARCH_FLAGS()
 message(STATUS "CUDA_BIN_ARCH ${CUDA_ARCH_BIN}")
 
@@ -72,7 +69,6 @@ find_package(catkin REQUIRED COMPONENTS
   visualization_msgs
   tf_conversions
   interactive_markers
-
 )
 
 add_message_files(
@@ -129,8 +125,8 @@ include_directories(
 
 set(HAVE_CUDA 1)
 #list(APPEND CUDA_NVCC_FLAGS "-arch;compute_20")
-list(APPEND CUDA_NVCC_FLAGS "-gencode;arch=compute_20,code=sm_20;-gencode;arch=compute_20,code=sm_21;-gencode;arch=compute_30,code=sm_30;-gencode;arch=compute_35,code=sm_35")
-  list(APPEND CUDA_NVCC_FLAGS "-Xcompiler;-fPIC;")
+list(APPEND CUDA_NVCC_FLAGS "-gencode;arch=compute_30,code=sm_30;-gencode;arch=compute_35,code=sm_35")
+list(APPEND CUDA_NVCC_FLAGS "-Xcompiler;-fPIC;")
 
 link_directories(${PCL_LIBRARY_DIRS})
 
